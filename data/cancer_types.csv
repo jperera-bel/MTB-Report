@@ -1,0 +1,110 @@
+knowledge	civic	tcga_cancer	Report	GENIE
+	Adult B-Lymphoblastic Leukemia,Leukemia,Hematologic Cancer			Leukemia
+acute_lymphocytic_leukemia	Acute Leukemia,Acute Lymphocytic Leukemia,Hematologic Cancer,T-cell Acute Lymphoblastic Leukemia,T-cell Leukemia,Leukemia		ALL	Leukemia
+acute_lymphoblastic_leukemia	Acute Leukemia,Acute Lymphocytic Leukemia,Hematologic Cancer,T-cell Acute Lymphoblastic Leukemia,T-cell Leukemia,Leukemia		ALL	Leukemia
+acute_myeloid_leukemia	Acute Leukemia,Acute Myeloid Leukemia,Hematologic Cancer,Leukemia	LAML	AML	Leukemia
+angiomyolipoma, PEComa			angiomyolipoma	
+angiosarcoma	Angiosarcoma		angiosarcoma	
+atypical_chronic_myeloid_leukemia	Atypical Chronic Myeloid Leukemia,Chronic Neutrophilic Leukemia,Chronic Myelomonocytic Leukemia		CML	Leukemia
+basal_cell_carcinoma	Basal Cell Carcinoma		basal cell carc.	Skin Cancer, Non-Melanoma
+biliary_tract	Bile Duct Adenocarcinoma,Cholangiocarcinoma,Intrahepatic Cholangiocarcinoma	CHOL	biliary tract	Hepatobiliary Cancer
+bladder	Bladder Carcinoma,Invasive Bladder Transitional Cell Carcinoma,Urothelial Carcinoma,Bladder Urothelial Carcinoma	BLCA	bladder	Bladder Cancer
+breast,breast cancer	Breast Cancer,Estrogen-receptor Positive Breast Cancer,Inflammatory Breast Carcinoma,Her2-receptor Positive Breast Cancer,Her2-receptor Negative Breast Cancer,Triple-receptor Negative Breast Cancer,Breast Carcinoma	BRCA	breast	Breast Cancer
+cancer_unspecified	Cancer		unspecified	
+cervical	Cervical Cancer,Cervical Squamous Cell Carcinoma,Cervical Adenocarcinoma	CESC	cervical	Cervical Cancer
+chronic_lymphocytic_leukemia	Chronic Lymphocytic Leukemia,Hematologic Cancer,T-cell Leukemia,Leukemia		CLL	Leukemia
+	T-cell Large Granular Lymphocyte Leukemia,Leukemia,Hematologic Cancer		T-LGL leuk.	Leukemia
+chronic_myeloid_leukemia	Chronic Myeloid Leukemia,Hematologic Cancer,Leukemia,Chronic Myeloproliferative Disease		CML	Leukemia
+colorectal	Colon Cancer,Colon Carcinoma,Colon Mucinous Adenocarcinoma,Colorectal Adenocarcinoma,Colorectal Cancer,Colon Adenocarcinoma	COAD	colorectal	Colorectal Cancer
+colorectal	Colorectal Adenocarcinoma,Colorectal Cancer,Rectum Cancer	READ	colorectal	Colorectal Cancer
+colorectal	Colon Cancer,Colon Carcinoma,Colon Mucinous Adenocarcinoma,Colorectal Adenocarcinoma,Colorectal Cancer,Colon Adenocarcinoma,Rectum Cancer	COADREAD	colorectal	Colorectal Cancer
+dermatofibrosarcoma	Dermatofibrosarcoma Protuberans		dermatofibro-sarcoma	
+endometrial	Endometrial Cancer,Endometrial Carcinoma,Uterine Corpus Endometrial Carcinoma,Uterine Corpus Serous Adenocarcinoma,Endometrial Adenocarcinoma,Endometrial Hyperplasia	UCEC	endometrial	Endometrial Cancer
+endometrial	Endometrial Cancer,Endometrial Carcinoma,Uterine Corpus Endometrial Carcinoma,Uterine Corpus Serous Adenocarcinoma	UCS	endometrial	Endometrial Cancer,Uterine Sarcoma
+esophageal	Esophageal Carcinoma,Esophagus Adenocarcinoma,Esophagus Squamous Cell Carcinoma,Esophageal Cancer	ESCA	esophageal	Esophagogastric Cancer
+fibrous_histiocytoma	Langerhans-Cell Histiocytosis, histiocytosis		langerhans-cell histiocytosis	Histiocytic Disorder, Histiocytosis
+gastric	Gastric Adenocarcinoma,Gastric Adenosquamous Carcinoma,Stomach Cancer,Stomach Carcinoma,Gastrointestinal Neuroendocrine Tumor	STAD	gastric	Esophagogastric Cancer
+gastrointestinal_stromal_tumor	Gastrointestinal Stromal Tumor	GIST	gastric (stromal)	Gastrointestinal Stromal Tumor
+glioma	Glioblastoma Multiforme,Supratentorial Glioblastoma Multiforme,Malignant Glioma	GBM	glioblastoma	CNS Cancer, Glioma
+glioma	Brain Glioma,Malignant Glioma,Oligodendroglioma	LGG	glioma	CNS Cancer, Glioma
+glioma	Glioblastoma Multiforme,Supratentorial Glioblastoma Multiforme,Malignant Glioma,Brain Glioma,Oligodendroglioma	GMBLGG	glioma	CNS Cancer, Glioma
+hairy_cell_leukemia			hairy cell leuk.	Leukemia
+head_neck	Head And Neck Carcinoma,Head And Neck Squamous Cell Carcinoma,Oropharynx Cancer,Head And Neck Cancer,Laryngeal Carcinoma,Salivary Gland Carcinoma	HNSC	head and neck	Head and Neck Cancer
+hepatocellular_carcinoma	Hepatocellular Carcinoma,Hepatocellular Fibrolamellar Carcinoma,Hepatocellular Mixed Fibrolamellar Carcinoma,Intrahepatic Cholangiocarcinoma	LIHC	hepatocellular	Hepatobiliary Cancer
+hypereosinophilic_syndrome			hypereosinphilic	
+hypereosinophilic_syndrome			hypereosinphilic	
+inflammatory_myofibroblastic_tumor	Inflammatory Myofibroblastic Tumor		myofibroblastic	
+liposarcomas	Liposarcoma,Myxoid Liposarcoma		liposarcoma	
+lung	Bronchogenic Lung Adenocarcinoma,Lung Acinar Adenocarcinoma,Lung Adenocarcinoma,Lung Carcinoma,Lung Cancer,Non-small Cell Lung Carcinoma	LUAD	lung	Non-Small Cell Lung Cancer
+lung	Lung Carcinoma,Lung Cancer,Lung Squamous Cell Carcinoma,Non-small Cell Lung Carcinoma	LUSC	lung	Non-Small Cell Lung Cancer
+lung			lung	Small Cell Lung Cancer
+lung_adeno	Bronchogenic Lung Adenocarcinoma,Lung Acinar Adenocarcinoma,Lung Adenocarcinoma,Lung Carcinoma,Lung Cancer,Non-small Cell Lung Carcinoma,Bronchiolo-alveolar Adenocarcinoma	LUAD	lung (adeno)	Non-Small Cell Lung Cancer
+lung_squamous	Lung Carcinoma,Lung Cancer,Lung Squamous Cell Carcinoma,Non-small Cell Lung Carcinoma	LUSC	lung (squa.)	Non-Small Cell Lung Cancer
+lung_adeno	Bronchogenic Lung Adenocarcinoma,Lung Acinar Adenocarcinoma,Lung Adenocarcinoma,Lung Carcinoma,Lung Cancer,Non-small Cell Lung Carcinoma	LUAD	lung (adeno)	Non-Small Cell Lung Cancer
+lung_squamous	Lung Carcinoma,Lung Cancer,Lung Squamous Cell Carcinoma,Non-small Cell Lung Carcinoma	LUSC	lung (squa.)	Non-Small Cell Lung Cancer
+lymphangioleiomyomatosis			lymphangio-leiomyomatosis	
+lymphoma	Hematologic Cancer,Anaplastic Large Cell Lymphoma		anaplast. Large-cell lymph.	Non-Hodgkin Lymphoma
+lymphoma	Hematologic Cancer	DLBC	large B cell lymph.	Non-Hodgkin Lymphoma
+lymphoma	Hematologic Cancer		lymphoma	Hodgkin Lymphoma,Non-Hodgkin Lymphoma
+malignant_peripheral_nerve_sheat_tumor, leukemia	Malignant Peripheral Nerve Sheath Tumor		neurosarcoma	
+malignant_rhabdoid_tumor	Rhabdoid Cancer		rhabdoid	
+mantle_cell_lymphoma,Mantle Cell Lymphoma	Hematologic Cancer		mantle cell lymphoma	Non-Hodgkin Lymphoma
+medulloblastoma	Brain Medulloblastoma		medulloblastoma	CNS Cancer
+megakaryoblastic_leukemia			megakaryo. Leuk.	Leukemia
+melanoma	Melanoma,Skin Melanoma	SKCM	melanoma	Melanoma
+melanoma	Melanoma,Uveal Melanoma	UVM	melanoma	Melanoma
+melanoma	Mucosal Melanoma		melanoma	Melanoma
+meningioma, PEComa			meningioma	CNS Cancer
+mesothelioma	Malignant Mesothelioma,Malignant Pleural Mesothelioma,Peritoneal Mesothelioma	MESO	mesothelioma	Mesothelioma
+myelofibrosis	Myelofibrosis,Chronic Myeloproliferative Disease,Hematologic Cancer		myelofibrosis	
+myeloma	Hematologic Cancer		myeloma	Multiple Myeloma
+myeloproliferative_neoplasm	Chronic Myeloproliferative Disease,Hematologic Cancer		MPN	Myeloproliferative Neoplasm
+myelodisplastic_syndrome	Hematologic Cancer		MDS	Myelodysplasia
+neuroblastoma	Neuroblastoma		neuroblastoma	
+NUT_midline_carcinoma	NUT Midline Carcinoma		NUT carcinoma	
+ovarian	Epithelial Ovarian Cancer,Ovarian Cancer,Ovarian Carcinoma,Ovarian Granulosa Cell Tumor,Ovarian Serous Carcinoma,Ovarian Serous Cystadenocarcinoma,Female Reproductive Organ Cancer,Ovarian Serous Cystadenocarcinoma	OV	ovarian	Ovarian Cancer
+ovarian_rhabdoid_tumor	Rhabdoid Cancer		ovarian rhabdoid	Ovarian Cancer
+pancreatic	Pancreas Adenocarcinoma,Pancreatic Carcinoma,Pancreatic Ductal Adenocarcinoma,Pancreatic Adenocarcinoma,Pancreatic Ductal Carcinoma,Tumor Of Exocrine Pancreas	PAAD	pancreatic	Pancreatic Cancer
+prostate	Prostate Cancer,Prostate Carcinoma	PRAD	prostate	Prostate Cancer
+renal	Renal Cell Carcinoma,Renal Clear Cell Carcinoma,Renal Carcinoma	KIRC	renal	Renal Cell Carcinoma
+renal	Papillary Renal Cell Carcinoma,Renal Cell Carcinoma,Renal Carcinoma	KIRP	renal	
+renal		KICH	renal	
+renal	Renal Cell Carcinoma,Renal Clear Cell Carcinoma,Renal Carcinoma,Papillary Renal Cell Carcinoma	KIPAN	renal	Kidney cancer
+retinoblastoma			retinoblastoma	Retinoblastoma
+rhabdomyosarcoma			rhabdomyo-sarcoma	
+sarcoma	Sarcoma	SARC	sarcoma	Breast Sarcoma,Soft Tissue Sarcoma,Uterine Sarcoma
+schwannoma			schwannoma	
+systemic_mastocytosis	Systemic Mastocytosis		mastocytosis	Mastocytosis
+thymic	Thymic Carcinoma	THYM	thymic	Thymic Tumor
+thymic_lymphoma		THYM	thymic lymphoma	
+thyroid	Thyroid Carcinoma,Thyroid Medullary Carcinoma	THCA	thyroid	Thyroid Cancer
+	Adrenocortical Carcinoma	ACC	adrenocortical	Adrenocortical Carcinoma
+		PCPG	paraganglioma	
+germ-cell tumor		TGCT		Germ Cell Tumor
+	Bone Ewing's Sarcoma,Ewing Sarcoma		bone ewing sarcoma	Bone Cancer
+melanoma	Malignant Anus Melanoma		melanoma	Anal Cancer,Melanoma
+	Merkel Cell Carcinoma		merkel carc.	
+	Osteosarcoma		osteosarcoma	Bone Cancer
+	Polycythemia Vera		Polycythemia vera	
+	Skin Squamous Cell Carcinoma		skin squa.	Skin Cancer, Non-Melanoma
+waldenstrom macroglobulinemia	Waldenström's Macroglobulinemia			
+	Papillary Adenocarcinoma		papillary adenocarcinoma	
+	Myeloid And Lymphoid Neoplasms With Eosinophilia And Abnormalities Of PDGFRA, PDGFRB, And FGFR1		myeloid and lymphoid neoplasms	
+	Sezary's Disease		sezary's disease	
+				
+	Pseudomyxoma Peritonei		pseudomyxoma peritonei	
+	Chuvash Polycythemia		chuvash polycythemia	
+	Peutz-Jeghers Syndrome		peutz-jeghers syndrome	
+	Neuroendocrine Tumor		neuroendocrine tumor	
+	Acoustic Neuroma		acoustic neuroma	
+	Scrotum Paget's Disease		scrotum paget's disease	
+	Thyroid Hurthle Cell Carcinoma		thyroid hurthle cell carcinoma	
+	Tuberous Sclerosis		tuberous sclerosis	
+	Lynch Syndrome		lynch syndrome	
+	Epithelioid Hemangioendothelioma		epithelioid hemangioendothelioma	
+	Von Hippel-Lindau Disease		von hippel-lindau disease	
+	Pericytoma		pericytoma	
+	PTEN Harmatoma Tumor Syndrome		pten harmatoma tumor syndrome	
+	Chordoma		chordoma	
+	Neuroendocrine Tumor		neuroendocrine tumor	
+	Desmoid Fibromatosis		desmoid fibromatosis	

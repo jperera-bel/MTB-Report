@@ -1,0 +1,320 @@
+\documentclass[9pt]{article}
+
+
+% Packages
+\usepackage[a4paper,left=0.7in,right=0.7in,top=0.9in,bottom=0.6in]{geometry} %set margins
+\renewcommand{\rmdefault}{ptm} % Times new roman
+\usepackage{wrapfig}           % placing the figure
+\usepackage{longtable}         % for the table of resutls
+\usepackage[table]{xcolor}     % removes two lines end table...
+\usepackage{tcolorbox}         % title boxes
+\setlength{\parindent}{0pt}    % remove ident from new paragraphs
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+
+
+
+%%%%%%%%%%%%%%%%%%%%
+
+
+\title{\vspace{-3cm}\textbf{MTB Report - From somatic variants to treatment options}}
+\author{Department of Medical Statistics, University Medical Center Goettingen}
+\maketitle
+
+
+
+
+
+<<echo=FALSE,results=hide,warning=FALSE,message=FALSE,include=FALSE>>=
+##########################
+# Functions and packages #
+##########################
+
+library(xtable)
+library(knitr)
+library(pander)
+library(ggplot2)   
+library(stringr) 
+library(timeSeries)
+
+# Colorize functions 
+mark_new_variants = function(x){
+  cols=c()
+  for (i in x){
+    if(grepl("NEW.*$",i)){
+      r = gsub("NEW"," ",i)
+      cols=c(cols,paste("\\textcolor[HTML]{787878}{", formatC(r, dig=2, format="f"), "}",sep=""))
+     # cols=c(cols,paste("\\textcolor[HTML]{787878}{\\underline{", formatC(r, dig=2, format="f"), "}}",sep=""))
+    }
+    if(!grepl("NEW.*$",i)){
+      cols=c(cols,i)
+    }
+  }
+  return(cols)
+}
+
+## Funciton to colour levels of evidence
+col_levels = function(x){
+  cols=c()
+  for (i in x){
+
+    if(i=="A1"){ 
+      cols=c(cols,paste("\\textbf{\\textcolor[HTML]{1A237E}{", formatC(i, dig=2, format="f"), "}}"))
+    }
+    if(i=="A2"){
+      cols=c(cols,paste("\\textbf{\\textcolor[HTML]{1976D2}{", formatC(i, dig=2, format="f"), "}}"))
+    }
+    if(i=="A3"){
+      cols=c(cols,paste("\\textbf{\\textcolor[HTML]{81D4FA}{", formatC(i, dig=2, format="f"), "}}"))
+    }
+    if(i=="B1"){
+      cols=c(cols,paste("\\textbf{\\textcolor[HTML]{1B5E20}{", formatC(i, dig=2, format="f"), "}}"))
+    }
+    if(i=="B2"){
+      cols=c(cols,paste("\\textbf{\\textcolor[HTML]{4CAF50}{", formatC(i, dig=2, format="f"), "}}"))
+    }
+    if(i=="B3"){
+      cols=c(cols,paste("\\textbf{\\textcolor[HTML]{AED581}{", formatC(i, dig=2, format="f"), "}}"))
+    }
+  }
+ return(cols)
+}
+
+## Function to colour positive and negative associations (green and red)
+col_association = function(x){
+  cols=c()
+  for (i in x){
+    if(i=="sensitivity"||i=="sensitivity "||i=="response"||i=="response "||i=="increased benefit"){
+      cols=c(cols,paste("\\textcolor[HTML]{388E3C}{", formatC(i, dig=2, format="f"), "}"))
+    }
+    if(i=="resistance"||i=="resistance "||i=="no response"||i==" no response"||i=="resistance or non-response"||i=="no sensitivity"||i=="decreased sensitivity"){
+      cols=c(cols,paste("\\textcolor[HTML]{C62828}{", formatC(i, dig=2, format="f"), "}"))
+    }
+    if(is.na(i)||i=="n/a"){
+      cols=c(cols,paste("\\textcolor[HTML]{388E3C}{", formatC(i, dig=2, format="f"), "}"))
+    }
+  }
+ return(cols)
+}
+
+
+
+pat[is.na(pat)]  = "-"
+
+
+@
+
+ \vspace{-0.7cm}
+
+\begin{tcolorbox}[colframe=gray!40!white,width=17cm,height=0.7cm,valign=center]
+\textbf{\large{PATIENT INFORMATION}}
+\end{tcolorbox}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{p{1.7in}p{1.5in}p{1in}p{2.5in}}
+%\hline
+\textbf{Patient ID}     & \Sexpr{patient}   	&  \textbf{Histology} 	& \Sexpr{pat$histological_type}           \\ 
+\textbf{Gender}         & \Sexpr{pat$gender}    &  \textbf{Stage}   	&  \Sexpr{pat$pathologic_stage}     \\ 
+\textbf{Age}   		&  \Sexpr{round(-(as.numeric(pat$days_to_birth)/365.25))} &  \textbf{Num SNVs}  & \Sexpr{nrow(maf)} \\ 
+\textbf{Disease} 	& \Sexpr{cancer}  	&  \textbf{Num CNVs}  	& \Sexpr{nrow(cnv)} \\ 
+\end{tabular}
+\end{table}
+
+
+<<echo=FALSE ,results=hide,warning=FALSE,message=FALSE,include=FALSE>>=
+#######################
+## Generating figure ##
+#######################
+
+if (length(levels)!=0){
+#png(paste(patient,"_levels.png",sep=""),width=9,height=5,units="in",res=600)
+df                    = expand.grid(c("1.Approved","2.Clinical","3.Preclinical"), c("B.Other\nCancers","A.Same\nCancer"))
+df$value              = c(nrow(A[A$level=="B1",]),nrow(A[A$level=="B2",]),nrow(A[A$level=="B3",]),nrow(A[A$level=="A1",]),nrow(A[A$level=="A2",]),nrow(A[A$level=="A3",]))
+
+df$value[df$value==0] = NA
+df$value              = as.numeric(df$value)
+
+
+g = ggplot(df, aes(Var1, Var2)) + geom_point(aes(size = value), colour = c("#1B5E20","#4CAF50","#AED581","#1A237E","#1976D2","#81D4FA")) +
+  theme_bw() + xlab("") + ylab("")
+g = g + labs(title="NUMBER OF GENE-DRUG \n FINDINGS BY LEVEL")+
+  theme(plot.title = element_text(size = 15, vjust = 2)) + 
+  scale_size_continuous(range=c(15,50)) + 
+  geom_text(data = df, aes(x = Var1, y = Var2, label = value), 
+          size = 10, vjust = 0.5, hjust = 0.5,colour="white", fontface="bold") + 
+  theme(plot.title = element_text(size=23),legend.position="none",axis.text.x = element_text(size=20),axis.text.y = element_text(size=20))+ 
+  coord_fixed(ratio = 0.75)
+g
+#dev.off()
+}
+if (length(levels)==0){
+  df                    = expand.grid(c("1.Approved","2.Clinical","3.Preclinical"), c("B.Other\nCancers","A.Same\nCancer"))
+  df$value              =rep(NA,6)
+  g = ggplot(df, aes(Var1, Var2)) + geom_point(aes(size = value), colour = c("#1B5E20","#4CAF50","#AED581","#1A237E","#1976D2","#81D4FA")) +
+  theme_bw() + xlab("") + ylab("")
+  g +  labs(title="NUMBER OF GENE-DRUG \n FINDINGS BY LEVEL") + coord_fixed(ratio = 0.75) +
+    theme(plot.title = element_text(size=22),legend.position="none",axis.text.x = element_text(size=20),axis.text.y = element_text(size=20))
+ }
+@
+
+
+\begin{tcolorbox}[colframe=gray!40!white,width=17cm,height=0.7cm,valign=center]
+\textbf{\large{GENE-DRUG PREDICTIVE ASSOCIATIONS}}
+\end{tcolorbox}
+
+
+\fontsize{8}{9}\selectfont
+%\vspace{0.3cm}
+\textbf{Method:} Somatic variants of the patient (mutations, amplifications, deletions, rearrangments) are searched in curated databases of predictive biomarkers (GKDB\footnote{Dienstmann et al., Cancer Discov (2015), v19}, CIViC\footnote{Griffith et al., Nat Genet (2017), version 01 June 2017}) and reported according to their clinical evidence (see Levels of Evidence). In the following, basic information of the somatic variants with relevant clinical implications can be found: \\
+
+\vspace{-0.5cm}
+
+<<label=tab_summary, echo=FALSE, results=tex>>=
+#####################################################
+## Generating summary table with  somatic variants ##
+#####################################################
+
+tab_summary = A[,c("Gene","Pat Var","level")]
+tab_summary$`Pat Var` = sapply(tab_summary$`Pat Var` , function(x) gsub("NEW| ", "", x))
+tab_summary$level.col    = col_levels(tab_summary$level)
+tab_summary = aggregate(tab_summary[,c("Gene","Pat Var","level.col")],by=list(name=tab_summary$Gene),FUN = function(X) paste(unique(X), collapse=", "))
+colnames(tab_summary) = c("\\textbf{Gene}","\\textbf{Gene}","\\textbf{Patient's Variant}","\\textbf{Level of Evidence}")
+
+## Create xtable (latex formated table)
+y=xtable(tab_summary[,-1])
+align(y)="p{0.1in}p{0.8in}p{0.8in}p{1.3in}"
+    
+## Print table
+print(y,size="\\fontsize{8pt}{10pt}\\selectfont",floating = FALSE,tabular.environment = "longtable",include.rownames =FALSE,sanitize.text.function = function(x){x})
+
+@
+
+\begin{wrapfigure}{h}{5cm} 
+\vspace{-1.8cm}
+\hspace{0.4cm}
+  \includegraphics[width=18em]{figure/unnamed-chunk-3-1.pdf}
+\end{wrapfigure}
+
+
+\vspace{-0.4cm}
+
+\textbf{Levels of Evidence:} Findings are classified into 6 levels of evidence combining the \textbf{axis A-B} and the \textbf{axis 1-2-3}. Level A means evidence in the same cancer type. Level B means evidence in any other cancer type. On the 1-2-3 axis, level 1 means evidence supported by drug approval organizations or clinical guidelines, level 2 contains clinical evidence (clinical trials, case reports) and level 3 consists of preclinical evidence. The distribution of findings into levels is summarized in the right figure\\
+
+
+\textbf{Table of Results:} All the predicitve associations are detailed in this table. The results are sorted by 1) drug frequency, 2) levels of evidence (A1-B1-A2-B2-A3-B3). To allow a quick interpretation, the type of association (response, resistance) is colored (green, red) and new variants are gray and underlined. 
+
+
+<<label=tab1, echo=FALSE, results=tex,warning=FALSE,message=FALSE>>=
+#################################
+## Generating Table of results ##
+#################################
+## Levels table
+
+if (nrow(A)!=0){
+
+## Colorize columns
+A$level.col    = col_levels(A$level)
+A$evidence.col = col_association(A$Predicts)
+A$Pvar = mark_new_variants(A$`Pat Var`)
+
+
+## Reorganize table
+A2 = A[,c(1,12,3,4,11,6:8,10)]
+
+
+## Remove genes when duplicated
+c=1
+while (c < nrow(A2)){
+  if (c==1){gi=A2[c,"Gene"]}
+  c=c+1
+  if (A2[c,"Gene"]==gi){
+    A2[c,1:2]=c("","")
+  }
+  else{gi=A2[c,"Gene"]}
+}
+
+
+#### Making double header
+
+## First header
+colnames(A2)    = c("\\textbf{Patient}"," "," "," ","\\textbf{Gene-Drug}","\\textbf{Associations}"," "," "," ")
+## Second header
+A2[nrow(A2)+1,] = c("\\textbf{Gene}","\\textbf{Variant}","\\textbf{Disease}","\\textbf{Known Variant}","\\textbf{Association}",
+                     "\\textbf{Drugs}","\\textbf{Evidence}","\\textbf{PMID}","\\textbf{Level}")
+A2 = A2[c(nrow(A2),1:(nrow(A2)-1)),]
+
+## Create xtable (latex formated table)
+x=xtable(A2)
+
+## Format witdh and hlines
+align(x)="p{0.1in}p{0.4in}p{0.4in}|p{0.65in}p{0.8in}p{0.7in}p{1.3in}p{0.5in}p{0.65in}p{0.2in}"
+hlines = c(-1, 0, 1, nrow(A2))
+
+## Print table
+print(x,size="\\fontsize{8pt}{10pt}\\selectfont",floating = FALSE,tabular.environment = "longtable",include.rownames =FALSE,sanitize.text.function = function(x){x},hline.after = hlines, add.to.row=list(pos = list(1), command = "\\hline \\endhead "))
+}
+@
+
+
+\textbf{Other genes:} here you can find other genes that might be interesting to check (information from Target DB\footnote{Van Allen et al.,  Nature medicine 20.6 (2014): 682-688, v3} and Meric-Bernstam list\footnote{Meric-Bernstam et al.,  J Natl Cancer Inst. 107(7) (2015)}). No level information is provided in this section. \\
+
+
+
+
+<<label=tab2, echo=FALSE, results=tex>>=
+###############################################################
+## Generating table with other genes (TARGET+MERIC-BERNSTAM) ##
+###############################################################
+
+## Recover genes not in previous table
+druggableTARGET = as.data.frame(lapply(druggableTARGET, as.character),stringsAsFactors = FALSE)
+
+if (nrow(druggableTARGET) !=0){
+  new_gene = !(druggableTARGET$Gene %in% A$Gene)
+  druggableTARGET = druggableTARGET[new_gene,]
+  druggableTARGET = druggableTARGET[,c(1,2,4,3,5)]
+  
+  if (nrow(druggableTARGET) !=0){
+    
+    ## Create xtable (latex formated table)
+    druggableTARGET$Patient_variant = gsub(pattern = "amplification",replacement = "amp", druggableTARGET$Patient_variant)
+    druggableTARGET$Patient_variant = gsub(pattern = "deletion",replacement = "del",druggableTARGET$Patient_variant)
+    
+    colnames(druggableTARGET)    = c("\\textbf{Patient}"," "," ","\\textbf{Drug-Gene Interactions}"," ")
+    
+    ## Second header
+    druggableTARGET[nrow(druggableTARGET)+1,] = c("\\textbf{Gene}","\\textbf{Variant}","\\textbf{Known Variant}","\\textbf{Description}","\\textbf{Drugs}")
+    druggableTARGET = druggableTARGET[c(nrow(druggableTARGET),1:(nrow(druggableTARGET)-1)),]
+    
+    ## Create xtable (latex formated table)
+    ## Format witdh and hlines
+    y=xtable(druggableTARGET)
+    align(y)="p{0.1in}p{0.4in}p{0.4in}|p{1in}p{3.2in}p{1in}"
+    hlines = c(-1, 0, 1, nrow(druggableTARGET))
+    
+    ## Print table
+    print(y,size="\\fontsize{8pt}{10pt}\\selectfont",floating = FALSE,tabular.environment = "longtable",include.rownames =FALSE,sanitize.text.function = function(x){x},hline.after = hlines, add.to.row=list(pos = list(1), command = "\\hline \\endhead "))
+  }
+}
+if (nrow(druggableTARGET)==0){
+  print("No other genes found")
+}
+
+
+
+
+
+@
+
+
+
+  
+  \end{document}
+
