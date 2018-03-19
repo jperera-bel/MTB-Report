@@ -10,6 +10,10 @@ The user can generate Molecular Tumor Board (MTB) reports for TCGA samples. MTB 
 2. Matching variants are then classified into levels of evidence
 3. Finally, a pdf report is generated
 
+If you use MTB report, please cite this pulication:
+
+<b>Perera-Bel J</b>, Hutter B, Heining C, Bleckmann A, Fröhlich M, Fröhling S, Glimm H, Brors B, Beißbarth T. <i>From somatic variants towards precision oncology: Evidence-driven reporting of treatment options in molecular tumor boards</i>. Genome Med. 2008 15;10(1):18. <a target="_blank" href="https://doi.org/10.1186/s13073-018-0529-2">doi: 10.1186/s13073-018-0529-2.</a>
+
 ## Dependencies
 ```r
 install.packages("knitr")
@@ -43,10 +47,13 @@ This script can also be used to analyze user-defined data as long as it follows 
 | HER2          | amplification| 
 | FBN3          | deletion     | 
 
-___Gene names__ must be Hugo Symbols. 
-__Variant Classification__ comprises the following levels: {Frame_Shift_Del, Frame_Shift_Ins, In_Frame_Del, In_Frame_Ins, Missense_Mutation, Nonsense_Mutation, Silent, Splice_Site, Translation_Start_Site, Nonstop_Mutation, RNA, Targeted_Region}. 
-__Protein Chanage__ must be e.g. T790M
-__CN alteration__ must be one of the foollowing levels: {amplification, deletion}_
+*Gene names* must be Hugo Symbols. 
+
+*Variant Classification* comprises the following levels: {Frame_Shift_Del, Frame_Shift_Ins, In_Frame_Del, In_Frame_Ins, Missense_Mutation, Nonsense_Mutation, Silent, Splice_Site, Translation_Start_Site, Nonstop_Mutation, RNA, Targeted_Region}. 
+
+*Protein Chanage* must be e.g. T790M
+
+*CN alteration* must be one of the foollowing levels: {amplification, deletion}_
 
 ## Files Description
 
