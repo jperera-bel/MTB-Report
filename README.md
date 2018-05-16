@@ -3,8 +3,8 @@
 The user can generate Molecular Tumor Board (MTB) reports for TCGA samples. MTB reports include a filtered list of actionable variants. To do so, it follows the following steps:
 
 1. Input SNVs, CNVs and fusions are queried against databases of actionable variants:
-    - [Gene Drug Knowledge Database](https://www.synapse.org/#!Synapse:syn2370773): Dienstmann et al., Cancer discovery 5.2 (2015), v19
-    - [CIViC](https://civic.genome.wustl.edu/): Griffith et al., Nat Genet (2017), version 1 July 2017
+    - [Gene Drug Knowledge Database](https://www.synapse.org/#!Synapse:syn2370773): Dienstmann et al., Cancer discovery 5.2 (2015), v20.0
+    - [CIViC](https://civic.genome.wustl.edu/): Griffith et al., Nat Genet (2017), release 01-May-2018
     - [TARGET](http://archive.broadinstitute.org/cancer/cga/target): Van Allen et al., Nat Med (2014), v3
     - Meric-Bernstam et al., J Natl Cancer Inst. (2015)
 2. Matching variants are then classified into levels of evidence
@@ -25,8 +25,11 @@ install.packages("timeSeries")
 devtools::install_github("mariodeng/FirebrowseR")
 ```
 
-Requires LaTeX
-
+Requires LaTeX an Texinfo. In Linux, install them with:
+```
+sudo apt-get install texlive-full
+sudo apt-get install texinfo
+```
 ## Usage
 
 Open the main R script (script.r) in R or RStudio. The user can change the default patient ID (TCGA ID) to any TCGA sample which is available through Firebrowse. 

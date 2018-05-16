@@ -1,0 +1,41 @@
+_______________________________________________
+ 		v1.1.0
+	      Wed May 16
+______________________________________________
+ 
+
+Update databases; create LICENSE; create NEWS; fix some bugs.
+
+
+DATABASE UPDATES
+================
+   - Update of CIViC.csv: Release from 01-May-2018
+   - Update of GDKD.csv: v20.0
+   - Bug fix in cancer_types.csv; "add germ cell in Report and Shiny columns"
+   - Bug fix in cancer_types.csv: "cancer_unspecified is now in first line"
+
+FUNCTIONS UPDATES
+=================
+   - Databases included as argument of the functions (the user can decide to use different versions)
+   - Bug fix in function match_SNV_GDKD(): "refined grep when matching missense mutations with specific variant specified in the database"
+   - Bug fix in function match_CNV_CIVIC(): "avoid grepping exon deletion, deletion polymorphism.."
+   - Bug fix in function get_levels_CIVIC(): "Evidence.Level" to "evidence_level" (changed in newer versions of CIViC)
+   - Bug fix in function clean_levels(): "to avoid error if input is empty"
+   - Bug fix "to aggregate duplicated evidences"
+
+OTHER UPDATES
+=============
+   - License file created (with MIT license)
+   - Update in script.r: now use knit() and texi2pdf() for creating the report
+   - Update in script.r: saving also as csv
+   - Report_tcga.Rnw updated to Report_tcga-knitr.Rnw: 
+
+
+______________________________________________
+ 		v1.0.0
+	       Sat Feb 17
+______________________________________________
+ 
+
+First release, version used in the publication Perera-Bel et al., 2018
+

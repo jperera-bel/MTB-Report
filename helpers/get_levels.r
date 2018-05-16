@@ -153,16 +153,16 @@ get_levels_CIVIC  = function(druggable_civic, cancer_civic){
   levelB3            = data.frame(matrix(ncol=8,nrow=0), stringsAsFactors = F)
   
   ## Subset same cancer rows into A levels
-  levelA1  = druggable_civic[intersect(same_cancer,which(druggable_civic$Evidence.Level=="A")),c(4,1,37,3,10,6,9,12)]
-  levelA2a = druggable_civic[intersect(same_cancer,which(druggable_civic$Evidence.Level=="B")),c(4,1,37,3,10,6,9,12)]
-  levelA2c = druggable_civic[intersect(same_cancer,which(druggable_civic$Evidence.Level=="C")),c(4,1,37,3,10,6,9,12)]
-  levelA3  = druggable_civic[intersect(same_cancer,which(druggable_civic$Evidence.Level=="D")),c(4,1,37,3,10,6,9,12)]
+  levelA1  = druggable_civic[intersect(same_cancer,which(druggable_civic$evidence_level=="A")),c(4,1,37,3,10,6,9,12)]
+  levelA2a = druggable_civic[intersect(same_cancer,which(druggable_civic$evidence_level=="B")),c(4,1,37,3,10,6,9,12)]
+  levelA2c = druggable_civic[intersect(same_cancer,which(druggable_civic$evidence_level=="C")),c(4,1,37,3,10,6,9,12)]
+  levelA3  = druggable_civic[intersect(same_cancer,which(druggable_civic$evidence_level=="D")),c(4,1,37,3,10,6,9,12)]
 
   ## Subset different cancer rows into B levels
-  levelB1  = druggable_civic[intersect(other_cancer,which(druggable_civic$Evidence.Level=="A")),c(4,1,37,3,10,6,9,12)]
-  levelB2a = druggable_civic[intersect(other_cancer,which(druggable_civic$Evidence.Level=="B")),c(4,1,37,3,10,6,9,12)]
-  levelB2c = druggable_civic[intersect(other_cancer,which(druggable_civic$Evidence.Level=="C")),c(4,1,37,3,10,6,9,12)]
-  levelB3  = druggable_civic[intersect(other_cancer,which(druggable_civic$Evidence.Level=="D")),c(4,1,37,3,10,6,9,12)]
+  levelB1  = druggable_civic[intersect(other_cancer,which(druggable_civic$evidence_level=="A")),c(4,1,37,3,10,6,9,12)]
+  levelB2a = druggable_civic[intersect(other_cancer,which(druggable_civic$evidence_level=="B")),c(4,1,37,3,10,6,9,12)]
+  levelB2c = druggable_civic[intersect(other_cancer,which(druggable_civic$evidence_level=="C")),c(4,1,37,3,10,6,9,12)]
+  levelB3  = druggable_civic[intersect(other_cancer,which(druggable_civic$evidence_level=="D")),c(4,1,37,3,10,6,9,12)]
 
   ## Homogeneize colnames with GDKD 
   colnames(levelA1)  = c("Disease","Gene","Patient_variant","Variant","Association","Therapeutic.context","Status","PMID_1")
@@ -230,6 +230,13 @@ if (is.list(A)){
   A = rbind(A1,B1,A2a,A2b,A2c,B2a,B2b,B2c,A3,B3)
 }
 
+## To avoid error if A is empty
+ if (nrow(A) == 0){
+    B = data.frame(matrix(ncol=9,nrow=0), stringsAsFactors = F)
+    colnames(B) = c("Cancer","Gene","Pat Var","Known Var","Predicts","Drugs","Evidence","Ref","level")
+    return(B)
+ }
+ 
 ## Homogeneize disease names
 civ_disease = lapply(A$Disease,function(x) {
   index = grep(x,synonyms$civic,ignore.case = TRUE)
@@ -295,6 +302,12 @@ rownames(A)   = NULL
 ## Add column names and levels of evidence
 colnames(A) = c("Cancer","Gene","Pat Var","Known Var","Predicts","Drugs","Evidence","Ref")
 A$level     = c(rep("A1",nrow(A1)),rep("B1",nrow(B1)),rep("A2",nrow(A2a)),rep("A2",nrow(A2b)),rep("A2",nrow(A2c)),rep("B2",nrow(B2a)),rep("B2",nrow(B2b)),rep("B2",nrow(B2c)),rep("A3",nrow(A3)),rep("B3",nrow(B3)))
+
+## Aggregate duplicate rows
+A_agg   = aggregate(A, by = list(A$Cancer,A$Gene,A$`Pat Var`,A$Predicts,A$Drugs,A$Evidence),
+                               FUN = function(X) paste(unique(X), collapse=", "))[,7:15]                             
+A=A_agg
+
 
 #Reorganize table
 A = A[,c(2,3,1,4:9)]

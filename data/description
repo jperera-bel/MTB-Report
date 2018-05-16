@@ -3,22 +3,24 @@
 #==================================#
 
 
-GDKD: Dienstmann et al., Cancer discovery 5.2 (2015), v19 
+GDKD: Dienstmann et al., Cancer discovery 5.2 (2015), v20.0 
 ==================================================================
  
 ==> Dowloaded from https://www.synapse.org/#!Synapse:syn2370773
-==> Blank spaces "\s" were removed from gene names
-==> Special characters "^" and "_" were removed from columns containing PMID
-==> Variants in the same gene sharing annotations at disease, drug, evidence and association levels were aggregated into one single entry
+==> Some preprocessing done with script: "preprocess.R"
+	==> Blank spaces "\s" were removed from gene names
+	==> Special characters "^" and "_" were removed from columns containing PMID
+	==> Variants in the same gene sharing annotations at disease, drug, evidence and association levels were aggregated into one single entry
 ==> Saved as GDKD.csv
    
    
-CIViC: Griffith et al., Nat Genet (2017), downloaded 01/06/2017
+CIViC: Griffith et al., Nat Genet (2017), release 01-May-2018
 =====================================================================
 
 ==> Dowloaded from https://civic.genome.wustl.edu/releases
-==> Subselection of rows containing "Predictive" evidence (column "evidence_type")
-==> Variants in the same gene sharing annotations at disease, drug, evidence and association levels were aggregated into one single entry
+==> Some preprocessing done with script: "preprocess.R"
+	==> Subselection of rows containing "Predictive" evidence (column "evidence_type")
+	==> Variants in the same gene sharing annotations at disease, drug, evidence and association levels were aggregated into one single entry
 ==> Saved as CIViC.csv
 
 

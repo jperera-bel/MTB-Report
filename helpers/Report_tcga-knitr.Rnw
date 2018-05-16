@@ -16,22 +16,36 @@
 %%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
-\SweaveOpts{concordance=TRUE}
+
+<<include=FALSE>>=
+library(knitr)
+opts_chunk$set(
+concordance=TRUE
+)
+@
+
 
 
 
 %%%%%%%%%%%%%%%%%%%%
 
 
-\title{\vspace{-3cm}\textbf{MTB Report - From somatic variants to treatment options}}
-\author{Department of Medical Statistics, University Medical Center Goettingen}
+\title{\vspace{-2.5cm}\textbf{MTB Report - From somatic variants to treatment options}}
+\author{Department of Medical Statistics, University Medical Center Goettingen, \today}
+\date{}
 \maketitle
 
+%%%%% DISCLAIMER %%%%%
+\vspace{-.5cm}
+\fontsize{8}{8}\selectfont
+\textbf{Disclaimer:} This report is intended for research use only and should not be used for medical or profesional advice. We make no guarantee of the comprehensiveness, reliability or accuracy of the information on this report. You assume full responsibility for all risks associated with using this report.
+\vspace{.5cm}
 
 
 
 
-<<echo=FALSE,results=hide,warning=FALSE,message=FALSE,include=FALSE>>=
+
+<<echo=FALSE,results='hide',warning=FALSE,message=FALSE,include=FALSE>>=
 ##########################
 # Functions and packages #
 ##########################
@@ -93,7 +107,7 @@ col_association = function(x){
     if(i=="sensitivity"||i=="sensitivity "||i=="response"||i=="response "||i=="increased benefit"){
       cols=c(cols,paste("\\textcolor[HTML]{388E3C}{", formatC(i, dig=2, format="f"), "}"))
     }
-    if(i=="resistance"||i=="resistance "||i=="no response"||i==" no response"||i=="resistance or non-response"||i=="no sensitivity"||i=="decreased sensitivity"){
+    if(i=="resistance"||i=="resistance "||i=="no response"||i==" no response"||i=="resistance or non-response"||i=="no sensitivity"||i=="decreased sensitivity"||i=="reduced sensitivity"){
       cols=c(cols,paste("\\textcolor[HTML]{C62828}{", formatC(i, dig=2, format="f"), "}"))
     }
     if(is.na(i)||i=="n/a"){
@@ -104,13 +118,12 @@ col_association = function(x){
 }
 
 
-
 pat[is.na(pat)]  = "-"
 
 
 @
 
- \vspace{-0.7cm}
+\vspace{-0.2cm}
 
 \begin{tcolorbox}[colframe=gray!40!white,width=17cm,height=0.7cm,valign=center]
 \textbf{\large{PATIENT INFORMATION}}
@@ -120,49 +133,13 @@ pat[is.na(pat)]  = "-"
 \centering
 \begin{tabular}{p{1.7in}p{1.5in}p{1in}p{2.5in}}
 %\hline
-\textbf{Patient ID}     & \Sexpr{patient}   	&  \textbf{Histology} 	& \Sexpr{pat$histological_type}           \\ 
-\textbf{Gender}         & \Sexpr{pat$gender}    &  \textbf{Stage}   	&  \Sexpr{pat$pathologic_stage}     \\ 
-\textbf{Age}   		&  \Sexpr{round(-(as.numeric(pat$days_to_birth)/365.25))} &  \textbf{Num SNVs}  & \Sexpr{nrow(maf)} \\ 
-\textbf{Disease} 	& \Sexpr{cancer}  	&  \textbf{Num CNVs}  	& \Sexpr{nrow(cnv)} \\ 
+\textbf{Patient ID} & \Sexpr{pat$tcga_participant_barcode}  &  \textbf{Histology} & \Sexpr{pat$histological_type}     \\ 
+\textbf{Gender}     & \Sexpr{pat$gender}                    &  \textbf{Stage}     &  \Sexpr{pat$pathologic_stage}     \\ 
+\textbf{Age}   	    &  \Sexpr{round(-(as.numeric(pat$days_to_birth)/365.25))} &  \textbf{Num SNVs}  & \Sexpr{nrow(maf)} \\ 
+\textbf{Disease}    & \Sexpr{cancer}  	                    &  \textbf{Num CNVs}  & \Sexpr{nrow(cnv)} \\ 
 \end{tabular}
 \end{table}
 
-
-<<echo=FALSE ,results=hide,warning=FALSE,message=FALSE,include=FALSE>>=
-#######################
-## Generating figure ##
-#######################
-
-if (length(levels)!=0){
-#png(paste(patient,"_levels.png",sep=""),width=9,height=5,units="in",res=600)
-df                    = expand.grid(c("1.Approved","2.Clinical","3.Preclinical"), c("B.Other\nCancers","A.Same\nCancer"))
-df$value              = c(nrow(A[A$level=="B1",]),nrow(A[A$level=="B2",]),nrow(A[A$level=="B3",]),nrow(A[A$level=="A1",]),nrow(A[A$level=="A2",]),nrow(A[A$level=="A3",]))
-
-df$value[df$value==0] = NA
-df$value              = as.numeric(df$value)
-
-
-g = ggplot(df, aes(Var1, Var2)) + geom_point(aes(size = value), colour = c("#1B5E20","#4CAF50","#AED581","#1A237E","#1976D2","#81D4FA")) +
-  theme_bw() + xlab("") + ylab("")
-g = g + labs(title="NUMBER OF GENE-DRUG \n FINDINGS BY LEVEL")+
-  theme(plot.title = element_text(size = 15, vjust = 2)) + 
-  scale_size_continuous(range=c(15,50)) + 
-  geom_text(data = df, aes(x = Var1, y = Var2, label = value), 
-          size = 10, vjust = 0.5, hjust = 0.5,colour="white", fontface="bold") + 
-  theme(plot.title = element_text(size=23),legend.position="none",axis.text.x = element_text(size=20),axis.text.y = element_text(size=20))+ 
-  coord_fixed(ratio = 0.75)
-g
-#dev.off()
-}
-if (length(levels)==0){
-  df                    = expand.grid(c("1.Approved","2.Clinical","3.Preclinical"), c("B.Other\nCancers","A.Same\nCancer"))
-  df$value              =rep(NA,6)
-  g = ggplot(df, aes(Var1, Var2)) + geom_point(aes(size = value), colour = c("#1B5E20","#4CAF50","#AED581","#1A237E","#1976D2","#81D4FA")) +
-  theme_bw() + xlab("") + ylab("")
-  g +  labs(title="NUMBER OF GENE-DRUG \n FINDINGS BY LEVEL") + coord_fixed(ratio = 0.75) +
-    theme(plot.title = element_text(size=22),legend.position="none",axis.text.x = element_text(size=20),axis.text.y = element_text(size=20))
- }
-@
 
 
 \begin{tcolorbox}[colframe=gray!40!white,width=17cm,height=0.7cm,valign=center]
@@ -172,46 +149,110 @@ if (length(levels)==0){
 
 \fontsize{8}{9}\selectfont
 %\vspace{0.3cm}
-\textbf{Method:} Somatic variants of the patient (mutations, amplifications, deletions, rearrangments) are searched in curated databases of predictive biomarkers (GKDB\footnote{Dienstmann et al., Cancer Discov (2015), v19}, CIViC\footnote{Griffith et al., Nat Genet (2017), version 01 June 2017}) and reported according to their clinical evidence (see Levels of Evidence). In the following, basic information of the somatic variants with relevant clinical implications can be found: \\
+\textbf{Method:} Somatic variants of the patient (mutations, amplifications, deletions, rearrangments) are searched in curated databases of predictive biomarkers  (GKDB\footnote{Dienstmann et al., Cancer Discov (2015), v20.0}, CIViC\footnote{Griffith et al., Nat Genet (2017), 01-May-2018}) and reported according to their clinical evidence (see Levels of Evidence). In the following table, basic information of the somatic variants with relevant clinical implications can be found: \\
 
 \vspace{-0.5cm}
 
-<<label=tab_summary, echo=FALSE, results=tex>>=
+<<label=tab_summary, echo=FALSE, results='asis'>>=
 #####################################################
 ## Generating summary table with  somatic variants ##
 #####################################################
 
-tab_summary = A[,c("Gene","Pat Var","level")]
-tab_summary$`Pat Var` = sapply(tab_summary$`Pat Var` , function(x) gsub("NEW| ", "", x))
-tab_summary$level.col    = col_levels(tab_summary$level)
-tab_summary = aggregate(tab_summary[,c("Gene","Pat Var","level.col")],by=list(name=tab_summary$Gene),FUN = function(X) paste(unique(X), collapse=", "))
-colnames(tab_summary) = c("\\textbf{Gene}","\\textbf{Gene}","\\textbf{Patient's Variant}","\\textbf{Level of Evidence}")
+if (nrow(A)!=0|| nrow(druggableTARGET)!=0){
+tab_summary           <- A[,c("Gene","Pat Var","level")]
+tab_summary$level.col <- col_levels(tab_summary$level)
+if (nrow(druggableTARGET)>0){
+   B            <- druggableTARGET[,c("Gene","Patient_variant")]
+   B$Patient_variant <- gsub(pattern = "amplification",replacement = "ampl.", B$Patient_variant)
+   B$Patient_variant <- gsub(pattern = "deletion",replacement = "del.",B$Patient_variant)
+   B$level      <- "unknown"
+   B$level.col  <- "unknown"
+   colnames(B)  <- c("Gene","Pat Var","level","level.col")
+   B            <- B[!(B$Gene %in% tab_summary$Gene),]
+   tab_summary  <- rbind(tab_summary,B)
+}
+tab_summary$`Pat Var` <- sapply(tab_summary$`Pat Var` , function(x) gsub("NEW", "", x))
+tab_summary$`Pat Var` <- sapply(tab_summary$`Pat Var` , function(x) gsub("([A-Z]) ([A-Z])", "\\1, \\2", x))
+tab_summary$`Pat Var` <- sapply(tab_summary$`Pat Var` , function(x) gsub(" ", "", x))
+tab_summary           <- aggregate(tab_summary[,c("Gene","Pat Var","level.col")],by=list(name=tab_summary$Gene),FUN = function(X) paste(unique(X), collapse=","))[,-1]
 
-## Create xtable (latex formated table)
-y=xtable(tab_summary[,-1])
-align(y)="p{0.1in}p{0.8in}p{0.8in}p{1.3in}"
+## SNVs
+
+if(!is.null(maf)){
+  if (nrow(maf)!=0){
+    snvs <- tab_summary$Gene %in% maf[,1]
+    i <- na.omit(match(tab_summary$Gene,maf[,1]))
+    tab_summary_snvs <- cbind(tab_summary[snvs,],maf[i,setdiff(1:ncol(maf),1:3)])
+    twice <- grep(",",tab_summary_snvs$`Pat Var`)
+    if (length(twice)!=0){
+      for (n in 1:length(twice)){
+        vars=c()
+        vars=strsplit(tab_summary_snvs[twice[n],"Pat Var"],",")[[1]]
+        vars=unique(vars)
+        if(grepl("ampl\\.|del\\.",paste(vars,collapse=" "))){
+    tab_summary_snvs[twice[n],"Pat Var"]=vars[grep("ampl\\.|del\\.",vars,invert=T)]
+        }
+        else{
+    tab_summary_snvs[twice[n],"Pat Var"]=paste(vars,collapse=", ")
+        }
+      } 
+    }
+  }
+
+
+colnames(tab_summary_snvs) <- c("Gene","Patient's Variant","Level of Evidence",colnames(maf)[setdiff(1:ncol(maf),1:3)])
+colnames(tab_summary_snvs) <- paste("\\textbf{",colnames(tab_summary_snvs),"}")
+
+ y<-xtable(tab_summary_snvs)
+# align(y)<-"p{0.1in}p{0.6in}p{0.8in}p{1.1in}p{0.7in}p{0.6in}p{0.8in}"
     
-## Print table
-print(y,size="\\fontsize{8pt}{10pt}\\selectfont",floating = FALSE,tabular.environment = "longtable",include.rownames =FALSE,sanitize.text.function = function(x){x})
+ #Print table
+ print(y,size="\\fontsize{8pt}{10pt}\\selectfont",floating = FALSE,tabular.environment = "longtable",include.rownames =FALSE,sanitize.text.function = function(x){x})
 
+}
+
+
+ ## CNVs
+tab_summary_cnvs <- tab_summary[grep("ampl\\.|del\\.",tab_summary$`Pat Var`),]
+#cnvs <- tab_summary_cnv$Gene[grep("ampl\\.|del\\.",tab_summary$`Pat Var`)] %in% cnv[,1]
+if (!is.null(tab_summary_cnvs) & nrow(tab_summary_cnvs)!=0 ){
+#if (sum(cnvs)!=0){
+j <- na.omit(match(tab_summary_cnvs$Gene,cnv[,1]))
+tab_summary_cnvs <- cbind(tab_summary_cnvs,cnv[j,setdiff(1:ncol(cnv),1:2)])
+#if (!is.null(tab_summary_cnvs$Size)){
+# tab_summary_cnvs$Size <- round(as.numeric(tab_summary_cnvs[,"Size"]/1000000),1)
+#}
+twice <- grep(",",tab_summary_cnvs$`Pat Var`)
+#if (length(twice)!=0){
+for (t in twice){
+  vars=strsplit(tab_summary_cnvs[t,"Pat Var"],", ")[[1]]
+  tab_summary_cnvs[t,"Pat Var"]=vars[grep("ampl\\.|del\\.",vars)]
+}
+
+colnames(tab_summary_cnvs) <- c("Gene","Patient's Variant","Level of Evidence",colnames(cnv)[setdiff(1:ncol(cnv),1:2)])
+colnames(tab_summary_cnvs) <- paste("\\textbf{",colnames(tab_summary_cnvs),"}")
+
+ y<-xtable(tab_summary_cnvs)
+# align(y)<-"p{0.1in}p{0.6in}p{0.8in}p{1.1in}p{0.6in}p{0.6in}"
+    
+ #Print table
+ print(y,size="\\fontsize{8pt}{10pt}\\selectfont",floating = FALSE,tabular.environment = "longtable",include.rownames =FALSE,sanitize.text.function = function(x){x})
+#}
+}
+
+}
 @
 
-\begin{wrapfigure}{h}{5cm} 
-\vspace{-1.8cm}
-\hspace{0.4cm}
-  \includegraphics[width=18em]{figure/unnamed-chunk-3-1.pdf}
-\end{wrapfigure}
 
 
-\vspace{-0.4cm}
 
-\textbf{Levels of Evidence:} Findings are classified into 6 levels of evidence combining the \textbf{axis A-B} and the \textbf{axis 1-2-3}. Level A means evidence in the same cancer type. Level B means evidence in any other cancer type. On the 1-2-3 axis, level 1 means evidence supported by drug approval organizations or clinical guidelines, level 2 contains clinical evidence (clinical trials, case reports) and level 3 consists of preclinical evidence. The distribution of findings into levels is summarized in the right figure\\
+\textbf{Levels of Evidence:} Findings are classified into 6 levels of evidence combining the \textbf{axis A-B} and the \textbf{axis 1-2-3}. Level A means evidence in the same cancer type. Level B means evidence in any other cancer type. On the 1-2-3 axis, level 1 means evidence supported by drug approval organizations or clinical guidelines, level 2 contains clinical evidence (clinical trials, case reports) and level 3 consists of preclinical evidence.\\
 
 
 \textbf{Table of Results:} All the predicitve associations are detailed in this table. The results are sorted by 1) drug frequency, 2) levels of evidence (A1-B1-A2-B2-A3-B3). To allow a quick interpretation, the type of association (response, resistance) is colored (green, red) and new variants are gray and underlined. 
 
 
-<<label=tab1, echo=FALSE, results=tex,warning=FALSE,message=FALSE>>=
+<<label=tab1, echo=FALSE, results='asis',warning=FALSE,message=FALSE>>=
 #################################
 ## Generating Table of results ##
 #################################
@@ -268,7 +309,7 @@ print(x,size="\\fontsize{8pt}{10pt}\\selectfont",floating = FALSE,tabular.enviro
 
 
 
-<<label=tab2, echo=FALSE, results=tex>>=
+<<label=tab2, echo=FALSE, results='asis'>>=
 ###############################################################
 ## Generating table with other genes (TARGET+MERIC-BERNSTAM) ##
 ###############################################################

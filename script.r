@@ -140,11 +140,21 @@ druggableTARGET = druggableTARGET
 
 
 # Create report
-Sweave2knitr("helpers/Report_tcga.Rnw")
-knit2pdf("helpers/Report_tcga-knitr.Rnw", clean = TRUE)
+# These commands require LaTeX and Texinfo
+# sudo apt-get install texlive-full
+# sudo apt-get install texinfo
+knit("helpers/Report_tcga-knitr.Rnw") 		# from knitted .Rnw to .tex
+texi2pdf("Report_tcga-knitr_2.tex",clean=T) 	# from .tex to .pdf
 
 # Now, the pdf report should be created in the same directory as script.R
 
+# if it does not work, you can always save the resutls as a .csv table
+# Fix format issues
+table$`Pat Var` <- sapply(table$`Pat Var` , function(x) gsub("NEW", "", x))
+table$`Pat Var` <- sapply(table$`Pat Var` , function(x) gsub("([A-Z]) ([A-Z])", "\\1, \\2", x))
+table$`Pat Var` <- sapply(table$`Pat Var` , function(x) gsub(" ", "", x))
+# save
+write.csv(table, "report.csv",row.names = F)
 
 
 

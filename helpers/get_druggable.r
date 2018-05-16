@@ -17,12 +17,13 @@
 #############
 
 
-match_SNV_GDKD = function(snv){
+match_SNV_GDKD = function(snv,db = read.delim("data/GDKD.csv",sep="\t")){
   ## Given a list of SNVs, searches for matching variants in Gene Drug Knowledge Database (Dienstmann et al., 2015).
   ## input: snv is a dataframe with SNVs. Must have three columns: gene symbol, variant classification and amino_acid_change (AXXXB).
   ## output: returns those Gene Drug Knowledge Database rows matching to the input SNVs.
   
-  gdkd = read.delim("data/GDKD.csv",sep="\t")
+  gdkd=db
+  #gdkd = read.delim("data/GDKD.csv",sep="\t")
   gdkd$Patient_variant = ""
   druggable                 = data.frame(matrix(ncol=ncol(gdkd),nrow=0))
   colnames(druggable)       = colnames(gdkd)
@@ -55,7 +56,8 @@ match_SNV_GDKD = function(snv){
         }
         
         ### Match Missense mutations with specific variant specified in the database
-        if (grepl("missense",druggable[i,"Description"], ignore.case = TRUE) && grepl("missense",p_var_type,ignore.case = TRUE)){
+        if (grepl("missense",druggable[i,"Description"], ignore.case = TRUE) && grepl("missense",p_var_type,ignore.case = TRUE) &&
+        grepl("mut|any|unknown",druggable[i,"Variant"],ignore.case = TRUE, )==FALSE){
           if (grepl(p_variant,druggable[i,"Variant"])){ 
             druggable[i,"Patient_variant"] = paste(druggable[i,"Patient_variant"],p_variant) }
 
@@ -114,12 +116,12 @@ match_SNV_GDKD = function(snv){
 
 
 
-match_CNV_GDKD = function(cnv){
+match_CNV_GDKD = function(cnv,db = read.delim("data/GDKD.csv",sep="\t")){
   ## Given a list of CNVs, searches for matching variants in Gene Drug Knowledge Database (Dienstmann et al., 2015).
   ## input: cnv is a dataframe with CNVs. Must have two columns: gene symbol, variant (amplification or deletion).
   ## output: returns those Gene Drug Knowledge Database rows matching to the input CNVs.
   
-  gdkd = read.delim("data/GDKD.csv",sep="\t")
+  gdkd = db
   gdkd$Patient_variant = ""
   druggable                 = data.frame(matrix(ncol=ncol(gdkd),nrow=0))
   colnames(druggable)       = colnames(gdkd)
@@ -160,12 +162,12 @@ match_CNV_GDKD = function(cnv){
 }
 
 
-match_TX_GDKD =function(tx){
+match_TX_GDKD =function(tx,db = read.delim("data/GDKD.csv",sep="\t")){
   ## Given a list of gene rearrangements, searches for matching variants in Gene Drug Knowledge Database (Dienstmann et al., 2015).
   ## input: tx is a vector with gene rearrangements. Each gene rearrangement is defined by two dash-separated genes "gene1-gene2".
   ## output: returns those Gene Drug Knowledge Database rows matching to the input gene rearrangements.
   
-  gdkd = read.delim("data/GDKD.csv",sep="\t")  
+  gdkd = db
   gdkd$Patient_variant = ""
   druggable                 = data.frame(matrix(ncol=ncol(gdkd),nrow=0))
   colnames(druggable)       = colnames(gdkd)
@@ -194,14 +196,14 @@ match_TX_GDKD =function(tx){
  
 }
 
-match_WT_GDKD = function(snv, cnv, cancer_gdkd){
+match_WT_GDKD = function(snv, cnv, cancer_gdkd,db = read.delim("data/GDKD.csv",sep="\t")){
   ## Searches for wild type variants in Gene Drug Knowledge Database not matching any gene in the inputs SNVs or CNVs.
   ## input: snv is a dataframe with SNVs. Must have three columns: gene symbol, variant classification and amino_acid_change (AXXXB).
   ## input: cnv is a dataframe with CNVs. Must have two columns: gene symbol, variant (amplification or deletion).
   ## input: cancer_gdkd is a character vector with a cancer type used by GDKD.
   ## output: returns those GDKD wild type rows (annotated for disease=cancer_gdkd) not matching to the input SNVs and CNVs.
 
-  gdkd = read.delim("data/GDKD.csv",sep="\t")
+  gdkd = db
   gdkd$Patient_variant = ""
   druggable = data.frame(matrix(ncol=ncol(gdkd),nrow=0))
   colnames(druggable)       = colnames(gdkd)
@@ -224,12 +226,12 @@ match_WT_GDKD = function(snv, cnv, cancer_gdkd){
 ## 2) CIVIC   ##
 ################
 
-match_SNV_CIVIC = function(snv){
+match_SNV_CIVIC = function(snv,db = read.delim("data/CIViC.csv",sep="\t")){
   ## Given a list of SNVs searches for matching variants in CIViC database.
   ## input: snv is a dataframe with SNVs. Must have three columns: gene symbol, variant classification and amino_acid_change (AXXXB).
   ## output: returns those CIViC rows matching to the input SNVs.
 
-  civic = read.delim("data/CIViC.csv",sep="\t")
+  civic = db
   civic$Patient_variant = ""
   druggable             = data.frame(matrix(ncol=ncol(civic),nrow=0))
   colnames(druggable)   = colnames(civic)
@@ -278,12 +280,12 @@ match_SNV_CIVIC = function(snv){
 }
 
 
-match_CNV_CIVIC =function(cnv){
+match_CNV_CIVIC =function(cnv,db = read.delim("data/CIViC.csv",sep="\t")){
   ## Given a list of CNVs searches for matching variants in CIViC database.
   ## input: cnv is a dataframe with CNVs. Must have two columns: gene symbol, variant (amplification or deletion).
   ## output: returns those CIViC rows matching to the input CNVs.
 
-  civic = read.delim("data/CIViC.csv",sep="\t")
+  civic = db
   civic$Patient_variant = ""
   druggable             = data.frame(matrix(ncol=ncol(civic),nrow=0))
   colnames(druggable)   = colnames(civic)
@@ -298,7 +300,7 @@ match_CNV_CIVIC =function(cnv){
  # wt  = wt[!(civic[wt,"gene"] %in% as.character(cnv[,1]))] # keep those that are not in cnv
 
   # Keep "amplification" or "deletion" variants
-  index     = grep("amplification|deletion|loss",druggable[,"variant"],ignore.case=TRUE)
+  index     = grep("amplification|^deletion$|loss",druggable[,"variant"],ignore.case=TRUE)
   druggable = druggable[sort(unique(index)),]     
   rownames(druggable) = NULL
 
@@ -326,14 +328,14 @@ match_CNV_CIVIC =function(cnv){
 }
 
 
-match_WT_CIVIC  = function(snv,cnv,cancer_civic){
+match_WT_CIVIC  = function(snv,cnv,cancer_civic,db = read.delim("data/CIViC.csv",sep="\t")){
   ## Searches for wild type variants in CIViC not matching any gene in the inputs SNVs or CNVs.
   ## input: snv is a dataframe with SNVs. Must have three columns: gene symbol, variant classification and amino_acid_change (AXXXB).
   ## input: cnv is a dataframe with CNVs. Must have two columns: gene symbol, variant (amplification or deletion).
   ## input: cancer_civic is a character vector with a cancer type used by CIViC.
   ## output: returns those CIViC wild type rows (annotated for disease=cancer_civic) not matching to the input SNVs and CNVs.
 
-  civic = read.delim("data/CIViC.csv",sep="\t")
+  civic = db
   wt  = grep("wild type",civic[,"variant"],ignore.case=TRUE)
   wt  = wt[!(civic[wt,"gene"] %in% c(as.character(cnv[,1]),as.character(snv[,1])))] # keep those that are not in cnv nor snv
 
