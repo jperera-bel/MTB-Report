@@ -1,4 +1,21 @@
 _______________________________________________
+ 		v1.2.0
+	      Fri Dec 7 2018
+______________________________________________
+ 
+
+Update CIViC; Add and update functions
+
+DATABASE UPDATES
+================
+   - Update of CIViC.csv: Release from 01-Dec-2018
+   
+FUNCTIONS UPDATES
+=================
+   - Created function summary_actionable_genes()
+   - Modified function match_SNV_CIVIC()
+
+_______________________________________________
  		v1.1.0
 	      Wed May 16
 ______________________________________________

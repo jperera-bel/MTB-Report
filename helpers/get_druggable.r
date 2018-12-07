@@ -265,7 +265,25 @@ match_SNV_CIVIC = function(snv,db = read.delim("data/CIViC.csv",sep="\t")){
           if (grepl(p_variant,druggable[i,"variant"])){ 
             druggable[i,"Patient_variant"] = paste(druggable[i,"Patient_variant"],p_variant)
           }
+          ## Repurposing - New variants         
+          else { 
+            if (grepl(gene,"BRAF,KIT,FGFR3,KRAS,PDGFRA,EGFR,AKT1,MTOR,ALK",ignore.case = TRUE)){ 
+              if (gene=="EGFR" &&  druggable[i,"variant"] != "T790M" && druggable[i,"variant"] != "C797S"){
+                druggable[i,"Patient_variant"] = paste(druggable[i,"Patient_variant"],paste("NEW",p_variant,sep=""),sep=" ")}
+              if (gene=="MTOR" && druggable[i,"variant"] != "F2108L"){
+                druggable[i,"Patient_variant"] = paste(druggable[i,"Patient_variant"],paste("NEW",p_variant,sep=""),sep=" ")}
+              if (gene=="AKT1" && druggable[i,"variant"] != "Q79K"){
+                druggable[i,"Patient_variant"] = paste(druggable[i,"Patient_variant"],paste("NEW",p_variant,sep=""),sep=" ")}
+              if (gene=="BRAF" && grepl("V600",druggable[i,"variant"])==F){
+                druggable[i,"Patient_variant"] = paste(druggable[i,"Patient_variant"],paste("NEW",p_variant,sep=""),sep=" ")}
+            }
+            else {
+              druggable[i,"Patient_variant"] = paste(druggable[i,"Patient_variant"],paste("NEW",p_variant,sep=""),sep=" ") 
+            }
+          }
         }
+
+
       }
     }
   }
