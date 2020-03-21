@@ -375,14 +375,14 @@ match_WT_CIVIC  = function(snv,cnv,cancer_civic,db = read.delim("data/CIViC.csv"
 ## 4) MERIC-BERNSTAM DB   ##
 ############################
 
-match_TARGET_MERIC = function(snv=c(),cnv=c(),tx=c()){
+match_TARGET_MERIC = function(snv=c(),cnv=c(),tx=c(),db=read.delim("data/TARGET_MERIC.csv",sep="\t")){
   ## Given a list of SNVs, CNVs and gene rearrangements, searches for matching variants in TARGET database and gene list from Meric-Bernstam et al 2015.
    ## input: snv is a dataframe with SNVs. Must have three columns: gene symbol, variant classification and amino_acid_change (AXXXB).
   ## input: cnv is a dataframe with CNVs. Must have two columns: gene symbol, variant (amplification or deletion).
   ## input: tx is a vector with gene rearrangements. Each gene rearrangement is defined by two dash-separated genes "gene1-gene2".
   ## output: returns those TARGET + MERIC-BERNSTAM DB rows matching to the input SNVs, CNVs and gene rearrangements.
 
-  target_meric = read.delim("data/TARGET_MERIC.csv",sep="\t")
+  target_meric = db
   druggable  = data.frame(matrix(ncol=5,nrow=0))
   druggable2 = data.frame(matrix(ncol=5,nrow=0))
   druggable3 = data.frame(matrix(ncol=5,nrow=0))
