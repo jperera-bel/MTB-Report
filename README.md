@@ -4,7 +4,7 @@ The user can generate Molecular Tumor Board (MTB) reports for TCGA samples. MTB 
 
 1. Input SNVs, CNVs and fusions are queried against databases of actionable variants:
     - [Gene Drug Knowledge Database](https://www.synapse.org/#!Synapse:syn2370773): Dienstmann et al., Cancer discovery 5.2 (2015), v20.0
-    - [CIViC](https://civic.genome.wustl.edu/): Griffith et al., Nat Genet (2017), release 01-Dec-2018
+    - [CIViC](https://civic.genome.wustl.edu/): Griffith et al., Nat Genet (2017), release 01-Mar-2020
     - [TARGET](http://archive.broadinstitute.org/cancer/cga/target): Van Allen et al., Nat Med (2014), v3
     - Meric-Bernstam et al., J Natl Cancer Inst. (2015)
 2. Matching variants are then classified into levels of evidence
@@ -72,5 +72,5 @@ and an in-house file with cancer type equivalences between the databases
 
 
 #### /helpers folder
-Contains three files with the helper functions used by script.r
+Contains four files with the helper functions used by script.r
 
